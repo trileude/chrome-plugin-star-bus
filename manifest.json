@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+
+  "name": "Mon arrêt de Bus",
+  "description": "This extension allows you to see the next bus in a simple way",
+  "version": "1.0",
+  "icons": {
+    "16": "star16.png",
+    "48": "star48.png",
+    "128": "star128.png"
+  },
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+    "default_title": "Click here!"
+  },
+  "options_ui": {
+    // Required.
+    "page": "options.html",
+    // Recommended.
+    "chrome_style": true
+  },
+  "permissions": [
+    "https://data.explore.star.fr/",
+    "storage"
+  ]
+}
