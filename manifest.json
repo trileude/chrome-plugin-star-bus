@@ -19,9 +19,11 @@
     "page": "options.html",
     // Recommended.
     "chrome_style": true
+    //"open_in_tab": true
   },
   "permissions": [
     "https://data.explore.star.fr/",
+    "http://m.starbusmetro.fr/",
     "storage"
   ]
 }

@@ -2,17 +2,42 @@
 <html>
 <meta charset="UTF-8">
 <head><title>Explore STAR Options</title></head>
+<style>
+	#resultResearch {
+		list-style: none;
+		margin: 5;
+		padding: 0;
+	}
+	#resultResearch a{
+		padding: 3px;
+	}
+	#resultResearch a::before { 
+		content: "> ";
+	}
+	fieldset {
+		margin-bottom: 15px;
+	}
+	#codeTimeo {
+		margin-bottom: 15px;
+	}
+</style>
 <body>
+	<fieldset>
+		<legend>Recherche du code Timéo</legend>
+		<p>A l'aide de ce formulaire vous pouvez rechercher le code Timéo de votre arrêt (attention au sens de la ligne).</p>
+		<input placeholder="Arrêt de bus" type="text" name="arretName" id="arretName" />
+		<br />
 
-Bus stop:
-<select id="stop">
- <option value="1164">Pont de Chateaudun</option>
- <option value="1530">Patis Tatelin</option>
- <option value="2114">Château de Vaux (direction République)</option>
-</select>
+		<ul id="resultResearch"></ul>
 
-<div id="status"></div>
-<button id="save">Save</button>
+		<ul id="listeLigneArret"></ul>
+	</fieldset>
+	
+	Code Timéo : 
+	<input placeholder="Code Timéo" type="text" name="codeTimeo" id="codeTimeo" />
+
+	<div id="status"></div>
+	<button id="save">Sauvegarder</button>
 
 <script src="options.js"></script>
 </body>
