@@ -1,3 +1,9 @@
+function notify() {
+	var arrived = new Date(this.alt);
+	//call background script
+	chrome.extension.getBackgroundPage().createAlarm(arrived - 600000);
+}
+
 /**
  * @param {string} arret - Bus stop number
  * @param {function(string)} errorCallback - Called when the XMLHttpRequest failed
@@ -29,6 +35,17 @@ function refreshBus(arret, errorCallback) {
 				li.appendChild(img);
 				
   				li.appendChild(document.createTextNode(text));
+  				
+  				if(diffMin >= 10) {
+					var bell = document.createElement('img');
+					bell.src = 'bell.png';
+					bell.className = "bell";
+					bell.title = "Notify me 10 minutes before it left !";
+					bell.onclick = notify;
+					bell.alt = jsonResponse['records'][i]['fields']['arrivee'];
+					li.appendChild(bell);
+				}
+				
 				ul.appendChild(li);
 			}
         }
@@ -54,4 +71,7 @@ window.onload = function() {
 			renderStatus('Cannot fetch explore.star.fr data. ' + errorMessage);
 		});
 	});
+	/*refreshBus(1164, function(errorMessage) {
+		renderStatus('Cannot fetch explore.star.fr data. ' + errorMessage);
+	});*/
 };

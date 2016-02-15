@@ -21,9 +21,14 @@
     "chrome_style": true
     //"open_in_tab": true
   },
+  "background": {
+    "scripts": ["background.js"]
+  },
   "permissions": [
     "https://data.explore.star.fr/",
     "http://m.starbusmetro.fr/",
-    "storage"
+    "storage",
+    "alarms", 
+    "notifications"
   ]
 }
