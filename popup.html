@@ -18,9 +18,6 @@
 				font-size: 1.2em;
 				margin-bottom: 5px;
 			}
-			#status {
-				white-space: pre;
-			}
 			ul {
 				list-style: none;
 				padding: 5px;
@@ -37,6 +34,10 @@
 		<script src="popup.js"></script>
 	</head>
 	<body>
+		<select id="listeArrets" name="listeArrets"></select>
+		
+		<h1 id="arret"></h1>
+		
 		<div class="windows8" id="loader">
 			<div class="wBall" id="wBall_1">
 				<div class="wInnerBall"></div>
@@ -54,7 +55,7 @@
 				<div class="wInnerBall"></div>
 			</div>
 		</div>
-		<h1 id="arret"></h1>
+		
 		<div id="status"></div>
 		<ul id="listeBus"></ul>
 		

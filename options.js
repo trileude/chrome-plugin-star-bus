@@ -1,10 +1,35 @@
 var timeoutStopTyping = null;
 
+function add_option_arret(arretName) {
+	var listeArrets = document.getElementById('listeArrets');
+	var option = document.createElement("option");
+	option.value = arretName;
+	option.text = arretName;
+	listeArrets.appendChild(option);
+}
+
+function add_arret() {
+	var stop = document.getElementById('codeTimeo').value;
+	add_option_arret(stop);
+}
+
+function remove_arret() {
+	var listeArrets = document.getElementById('listeArrets');
+	listeArrets.remove(listeArrets.selectedIndex);
+}
+
 // Saves options to chrome.storage.sync.
 function save_options() {
-	var stop = document.getElementById('codeTimeo').value;
+	var listeArrets = document.getElementById('listeArrets');
+	var timeout = document.getElementById('timeoutNotif').value;
+	var arrets  = new Array();
+	for(i=0;i<listeArrets.options.length;i++) {
+		arrets.push(listeArrets.options[i].value);
+	}
+	
 	chrome.storage.sync.set({
-		favoriteStop: stop
+		stops: arrets,
+		timeoutNotif: timeout
 	}, function() {
 		// Update status to let user know options were saved.
 		var status = document.getElementById('status');
@@ -18,11 +43,18 @@ function save_options() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restore_options() {
-	// Use default value 1164
 	chrome.storage.sync.get({
-		favoriteStop: '1164'
+		stops: new Array(),
+		timeoutNotif: '10'
 	}, function(items) {
-		document.getElementById('codeTimeo').value = items.favoriteStop;
+		document.getElementById('timeoutNotif').value = items.timeoutNotif;
+		
+		var listeArrets = document.getElementById('listeArrets');
+		while(listeArrets.firstChild) 
+    		listeArrets.removeChild(listeArrets.firstChild);
+    	for(i=0;i<items.stops.length;i++) {
+			add_option_arret(items.stops[i]);
+		}
 	});
 }
 
@@ -111,3 +143,5 @@ arretName.onkeyup = function (e) {
 };
 
 document.getElementById('save').addEventListener('click', save_options);
+document.getElementById('add').addEventListener('click', add_arret);
+document.getElementById('delete').addEventListener('click', remove_arret);

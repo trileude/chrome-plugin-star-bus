@@ -17,8 +17,11 @@
 	fieldset {
 		margin-bottom: 15px;
 	}
-	#codeTimeo {
+	#codeTimeo, #listeArrets, #timeoutNotif {
 		margin-bottom: 15px;
+	}
+	#timeoutNotif {
+		width: 100px;
 	}
 </style>
 <body>
@@ -34,7 +37,16 @@
 	</fieldset>
 	
 	Code Timéo : 
-	<input placeholder="Code Timéo" type="text" name="codeTimeo" id="codeTimeo" />
+	<input placeholder="Code Timéo" type="text" name="codeTimeo" id="codeTimeo" /> <button id="add">Ajouter</button>
+	<br />
+
+	Liste des arrêts :	
+	<select id="listeArrets" name="listeArrets"></select> <button id="delete">Supprimer l'arrêt</button>
+	<br />
+	
+	Timeout notification (en minutes) : 
+	<input placeholder="Timeout notification" type="text" name="timeoutNotif" id="timeoutNotif" maxlength="4" />
+	<br />
 
 	<div id="status"></div>
 	<button id="save">Sauvegarder</button>

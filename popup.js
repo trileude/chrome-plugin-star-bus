@@ -1,7 +1,18 @@
+var timeoutNotif = 5;
+
 function notify() {
 	var arrived = new Date(this.alt);
+	
 	//call background script
-	chrome.extension.getBackgroundPage().createAlarm(arrived - 600000);
+	chrome.extension.getBackgroundPage().createAlarm(arrived - (timeoutNotif * 60 * 1000));
+}
+
+function add_option_arret(arretName) {
+	var listeArrets = document.getElementById('listeArrets');
+	var option = document.createElement("option");
+	option.value = arretName;
+	option.text = arretName;
+	listeArrets.appendChild(option);
 }
 
 /**
@@ -24,9 +35,13 @@ function refreshBus(arret, errorCallback) {
             var arret = jsonResponse['records'][0]['fields']['nomarret'];
             document.getElementById('arret').textContent = arret;
             
+            while(ul.firstChild) 
+    			ul.removeChild(ul.firstChild);
+            
             for(i=0;i<jsonResponse['records'].length;i++) {
 				var li = document.createElement("li");
 				var bus = new Date(jsonResponse['records'][i]['fields']['arrivee']).getTime();
+				console.log(jsonResponse['records'][i]['fields']['arrivee']);
             	var diffMin = Math.floor((bus - now)/1000/60); 
 				var text = diffMin + " min";
   				
@@ -36,7 +51,7 @@ function refreshBus(arret, errorCallback) {
 				
   				li.appendChild(document.createTextNode(text));
   				
-  				if(diffMin >= 10) {
+  				if(diffMin >= timeoutNotif) {
 					var bell = document.createElement('img');
 					bell.src = 'bell.png';
 					bell.className = "bell";
@@ -59,17 +74,37 @@ function refreshBus(arret, errorCallback) {
     xmlhttp.send();
 }
 
+function change_arret() {
+	var listeArret = document.getElementById('listeArrets');
+	document.getElementById('loader').style.display = 'block';
+	refreshBus(listeArrets.options[listeArrets.selectedIndex].value, function(errorMessage) {
+		renderStatus('Cannot fetch explore.star.fr data. ' + errorMessage);
+	});
+}
+
 function renderStatus(statusText) {
   	document.getElementById('status').textContent = statusText;
 }
 
 window.onload = function() {
+	document.getElementById('listeArrets').addEventListener('change', change_arret);
+	
 	chrome.storage.sync.get({
-		favoriteStop: '1164'
+		stops: new Array(),
+		timeoutNotif: 10
 	}, function(items) {
-		refreshBus(items.favoriteStop, function(errorMessage) {
-			renderStatus('Cannot fetch explore.star.fr data. ' + errorMessage);
-		});
+		for(i=0;i<items.stops.length;i++) {
+			add_option_arret(items.stops[i]);
+		}
+		if(items.stops.length > 0) {
+			refreshBus(items.stops[0], function(errorMessage) {
+				renderStatus('Cannot fetch explore.star.fr data. ' + errorMessage);
+			});
+		}
+		else {
+			renderStatus('Vous devez configurer au moins un arrêt.Faire clic droit et Options pour configurer.');
+		}
+		timeoutNotif = items.timeoutNotif;
 	});
 	/*refreshBus(1164, function(errorMessage) {
 		renderStatus('Cannot fetch explore.star.fr data. ' + errorMessage);

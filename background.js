@@ -17,7 +17,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 			type: 'basic',
 			iconUrl: 'star128.png',
 			title: 'Il est temps de partir !',
-			message: 'Le bus est dans 10 minutes '
+			message: 'Votre bus est en approche !'
 		}, function(notificationId) {});
 	}
 });
